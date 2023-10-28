@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https:fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
     <title>Pessoas Empresa</title>
 </head>
@@ -23,7 +23,7 @@
         include(__DIR__ . '/../bd/connectionBD.php');
 
         if (isset($conn) && $conn) {
-            $sql = "SELECT nome, cpf, idade, carteiratrab, setor, turno, salario FROM Funcionario";
+            $sql = "SELECT nome, datanasc, salario, cpf, carteiratrabalho, nomesetor, turno, funcao FROM Funcionarios";
             $result = $conn->query($sql);
 
             if ($result) {
@@ -39,18 +39,19 @@
         <?php
         if ($num_rows > 0) {
             ?>
-            <table>
+            <table class="tabela-funcionarios">
             <?php
             while ($row = $result->fetch_assoc()) {
                 ?>
                 <tr>
-                    <th>Nome: <?php echo $row['nome']; ?> </td>
-                    <th>Cpf: <?php echo $row['cpf']; ?> </td>
-                    <th>Idade: <?php echo $row['idade']; ?> </td>
-                    <th>Carteira de Trabalho: <?php echo $row['carteiratrab']; ?> </th>
-                    <th>Setor: <?php echo $row['setor']; ?> </th>
-                    <th>Turno: <?php echo $row['turno']; ?> </th>
+                    <th>Nome: <?php echo $row['nome']; ?> </th>
+                    <th>Data de Nascimento: <?php echo $row['datanasc']; ?> </th>
                     <th>Salário: <?php echo $row['salario']; ?> </th>
+                    <th>Cpf: <?php echo $row['cpf']; ?> </th>
+                    <th>Carteira de Trabalho: <?php echo $row['carteiratrabalho']; ?> </th>
+                    <th>Setor: <?php echo $row['nomesetor']; ?> </th>
+                    <th>Turno: <?php echo $row['turno']; ?> </th>
+                    <th>Função: <?php echo $row['funcao']; ?> </th>
                 </tr>
                 <?php
             }

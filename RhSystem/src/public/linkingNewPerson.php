@@ -7,17 +7,21 @@
 </head>
 <body>
     <?php
-        include(__DIR__ . '/../bd/connectionBD.php');
+    include(__DIR__ . '/../bd/connectionBD.php');
 
-        $nome = $_POST["nome"];
-        $cpf = $_POST["cpf"];
-        $idade = $_POST["idade"];
-        $carteiratrab = $_POST["carteiratrab"];
-        $setor = $_POST["setor"];
-        $turno = $_POST["turno"];
-        $salario = $_POST["salario"];
-        $sql = "INSERT INTO Funcionario(nome, cpf, idade, carteiratrab, setor, turno, salario) VALUES('$nome', '$cpf',
-        '$idade', '$carteiratrab', '$setor', '$turno', '$salario')";
+    $nome = $_POST["nome"];
+    $dtNascimento = $_POST["DataNasc"];
+    $salario = $_POST["salario"];
+    $cpf = $_POST["cpf"];
+    $carteiratrab = $_POST["carteiratrab"];
+    $setor = strtoupper($_POST["setor"]);
+    $turno = strtoupper($_POST["turno"]);
+    $funcao = $_POST["funcao"];
+
+    $sql = "INSERT INTO Funcionarios(nome, DataNasc, salario, cpf, carteiratrabalho, nomesetor, turno, funcao) VALUES('$nome', '$dtNascimento',
+    '$salario', '$cpf', '$carteiratrab', '$setor', '$turno', '$funcao')";
+
+    try {
         $result = $conn->query($sql);
 
         if ($result === TRUE) {
@@ -26,15 +30,23 @@
                 alert('Usuário cadastrado com sucesso!!!');
                 location.href = 'index.php';
             </script>
-    <?php
+            <?php
         } else {
             ?>
             <script>
                 alert('Algo não deu certo...');
                 history.go(-1);
             </script>
-    <?php
+            <?php
         }
+    } catch (Exception $e) {
+        ?>
+        <script>
+            alert('Erro: <?php echo $e->getMessage(); ?>');
+            history.go(-1);
+        </script>
+        <?php
+    }
     ?>
 </body>
 </html>

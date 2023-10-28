@@ -12,18 +12,20 @@
     <form name="form" id="form" action="linkingNewPerson.php" method="post">
         <p>Nome: </p>
         <input type="text" name="nome"><br>
+        <p>Data de Nascimento: </p>
+        <input type="date" name="DataNasc" id="DataNasc"><br>
+        <p>Salário: </p>
+        <input type="text" name="salario"><br>
         <p>Cpf: </p>
         <input type="text" name="cpf"><br>
-        <p>Idade: </p>
-        <input type="text" name="idade"><br>
         <p>Carteira de Trabalho: </p>
         <input type="text" name="carteiratrab"><br>
         <p>Setor: </p>
         <input type="text" name="setor"><br>
         <p>Turno: </p>
         <input type="text" name="turno"><br>
-        <p>Salário: </p>
-        <input type="text" name="salario"><br><br>
+        <p>Função: </p>
+        <input type="text" name="funcao"><br><br>
         <input type="submit" value="Enviar">
     </form>
 </body>

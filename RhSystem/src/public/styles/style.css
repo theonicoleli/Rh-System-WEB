@@ -27,3 +27,8 @@
     background-color: rgb(64, 85, 150);
     color: white;
 }
+
+.tabela-funcionarios {
+    margin: auto;
+    display: flex;
+}
