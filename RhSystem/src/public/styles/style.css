@@ -5,6 +5,7 @@
 * {
     padding: 0;
     margin: 0;
+    box-sizing: border-box;
 }
 
 .header {
@@ -18,7 +19,7 @@
 .title {
     font-size: 25px;
     display: inline-block;
-    margin: auto 80px;
+    margin: 0 20px;
     text-align: center;
 }
 
@@ -26,9 +27,25 @@
     font-family: var(--fontpadrao);
     background-color: rgb(64, 85, 150);
     color: white;
+    padding: 20px;
 }
 
 .tabela-funcionarios {
     margin: auto;
     display: flex;
+    flex-direction: column;
+}
+
+.tabela-funcionarios th {
+    padding: 10px;
+    text-align: left;
+}
+
+.tabela-funcionarios tr {
+    margin-bottom: 10px;
+    border: 1px solid white;
+}
+
+.tabela-funcionarios td {
+    padding: 5px;
 }

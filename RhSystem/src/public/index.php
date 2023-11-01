@@ -20,45 +20,88 @@
     </div>
     <div class="body div">
         <?php
-        include(__DIR__ . '/../bd/connectionBD.php');
+            include(__DIR__ . '/../bd/connectionBD.php');
 
-        if (isset($conn) && $conn) {
-            $sql = "SELECT nome, datanasc, salario, cpf, carteiratrabalho, nomesetor, turno, funcao FROM Funcionarios";
-            $result = $conn->query($sql);
-
-            if ($result) {
-                $num_rows = $result->num_rows;
+            if (isset($conn) && $conn) {
+                $sql = "SELECT nome, datanasc, salario, cpf, carteiratrabalho, nomesetor, turno, funcao, login FROM Funcionarios";
+                $result = $conn->query($sql);
+            
+                if ($result) {
+                    $num_rows = $result->num_rows;
+                } else {
+                    $num_rows = 0;
+                }
             } else {
                 $num_rows = 0;
             }
-        } else {
-            $num_rows = 0;
-        }
-        ?>
-        <h1>Número de registros: <?php echo $num_rows; ?></h1>
-        <?php
-        if ($num_rows > 0) {
             ?>
-            <table class="tabela-funcionarios">
+            
+            <h1>Número de registros: <?php echo $num_rows; ?></h1>
+            
             <?php
-            while ($row = $result->fetch_assoc()) {
-                ?>
-                <tr>
-                    <th>Nome: <?php echo $row['nome']; ?> </th>
-                    <th>Data de Nascimento: <?php echo $row['datanasc']; ?> </th>
-                    <th>Salário: <?php echo $row['salario']; ?> </th>
-                    <th>Cpf: <?php echo $row['cpf']; ?> </th>
-                    <th>Carteira de Trabalho: <?php echo $row['carteiratrabalho']; ?> </th>
-                    <th>Setor: <?php echo $row['nomesetor']; ?> </th>
-                    <th>Turno: <?php echo $row['turno']; ?> </th>
-                    <th>Função: <?php echo $row['funcao']; ?> </th>
-                </tr>
-                <?php
+            session_start();
+            
+            if (isset($_SESSION["NomeSetor"])) {
+                if ($_SESSION["NomeSetor"] !== "RH") {
+                    if ($num_rows > 0) {
+                        ?>
+                        <table class="tabela-funcionarios">
+                        <?php
+                        while ($row = $result->fetch_assoc()) {
+                            ?>
+                            <tr>
+                                <th>Nome: <?php echo $row['nome']; ?></th>
+                                <?php
+                                if (isset($row['login']) && $row['login'] == $_SESSION["nome_usuario"]) {
+                                ?>
+                                    <th>Salário: <?php echo $row['salario']; ?></th>
+                                <?php
+                                } else {
+                                ?>
+                                    <th>Salário: Não disponível</th>
+                                <?php
+                                }
+                                ?>
+                                <th>Data de Nascimento: <?php echo $row['datanasc']; ?></th>
+                                <th>Setor: <?php echo $row['nomesetor']; ?></th>
+                                <th>Turno: <?php echo $row['turno']; ?></th>
+                                <th>Função: <?php echo $row['funcao']; ?></th>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </table>
+                        <?php
+                    }
+                } else {
+                    $cpfUsuarioLogado = $_SESSION["cpf"];
+            
+                    if ($num_rows > 0) {
+                        ?>
+                        <table class="tabela-funcionarios">
+                        <?php
+                        while ($row = $result->fetch_assoc()) {
+                            ?>
+                            <tr>
+                                <th>Nome: <?php echo $row['nome']; ?> </th>
+                                <th>Data de Nascimento: <?php echo $row['datanasc']; ?> </th>
+                                <th>Salário: <?php echo $row['salario']; ?> </th>
+                                <th>Cpf: <?php echo $row['cpf']; ?> </th>
+                                <th>Carteira de Trabalho: <?php echo $row['carteiratrabalho']; ?> </th>
+                                <th>Setor: <?php echo $row['nomesetor']; ?> </th>
+                                <th>Turno: <?php echo $row['turno']; ?> </th>
+                                <th>Função: <?php echo $row['funcao']; ?> </th>
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                        </table>
+                        <?php
+                    }
+                }
+            } else {
+                echo "NomeSetor não está definido na sessão.";
             }
-            ?>
-            </table>
-            <?php
-        }
         ?>
     </div>
 </body>
