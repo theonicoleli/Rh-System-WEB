@@ -1,0 +1,51 @@
+:root {
+    --fontpadrao: 'Tilt Neon', sans-serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.header {
+    font-family: var(--fontpadrao);
+    background-color: rgb(36, 53, 102);
+    color: white;
+    text-align: center;
+    padding: 17px;
+}
+
+.title {
+    font-size: 25px;
+    display: inline-block;
+    margin: 0 20px;
+    text-align: center;
+}
+
+.body {
+    font-family: var(--fontpadrao);
+    background-color: rgb(64, 85, 150);
+    color: white;
+    padding: 20px;
+}
+
+.tabela-funcionarios {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.tabela-funcionarios th {
+    padding: 10px;
+    text-align: left;
+}
+
+.tabela-funcionarios tr {
+    margin-bottom: 10px;
+    border: 1px solid white;
+}
+
+.tabela-funcionarios td {
+    padding: 5px;
+}

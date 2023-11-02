@@ -50,7 +50,7 @@
         $cpf = getCpf($login);
         $_SESSION["cpf"] = $cpf;
 
-        header("Location: index.php");
+        header("Location: menu.php");
         exit();
     } else {
         echo "<script>alert('Verifique seu login e senha!'); history.go(-1);</script>";
