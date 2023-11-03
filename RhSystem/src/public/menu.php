@@ -19,6 +19,21 @@
 
         include(__DIR__ . '/../bd/connectionBD.php');
 
+        if (isset($conn) && $conn) {
+            $sql = "SELECT nome, datanasc, salario, cpf, 
+            carteiratrabalho, nomesetor, turno, funcao, 
+            login, id_func FROM Funcionarios";
+            $result = $conn->query($sql);
+
+            if ($result) {
+                $num_rows = $result->num_rows;
+            } else {
+                $num_rows = 0;
+            }
+        } else {
+            $num_rows = 0;
+        }
+
         if (isset($_SESSION["NomeSetor"])) {
             if ($_SESSION["NomeSetor"] === "RH") {
                 ?>
@@ -30,16 +45,31 @@
                 <?php
             }
         }
+
+        while ($row = $result->fetch_assoc()) {
+            if ((isset($row['login']) && $row['login'] == $_SESSION["nome_usuario"])) {
+                $personId = $row["id_func"];
+            }
+        }
         ?>
+        
+        <h1 class="title" title="alterarLogin">
+            <a href="changingLogin.php?id_func=<?php echo $personId?>">
+                Alterar Login
+            </a>
+        </h1>
+
+        <a class="title" href="index.php" 
+        title="Sair" 
+        onclick="return confirm('Tem certeza que deseja se desconectar da sessão atual?')">Sair</a>
     </div> 
 
     <div class="body div">
         <?php
         if (isset($conn) && $conn) {
-
-            $sql = "SELECT nome, datanasc, salario, cpf, carteiratrabalho, nomesetor, 
-            turno, funcao, login, id_func FROM Funcionarios";
-
+            $sql = "SELECT nome, datanasc, salario, cpf, 
+            carteiratrabalho, nomesetor, turno, funcao, 
+            login, id_func FROM Funcionarios";
             $result = $conn->query($sql);
 
             if ($result) {
@@ -51,8 +81,7 @@
             $num_rows = 0;
         }
         ?>
-
-        <h1>Número de registros: <?php echo $num_rows; ?></h1>
+        <h2>Número de registros: <?php echo $num_rows; ?></h2>
 
         <?php
         if (isset($_SESSION["NomeSetor"])) {
@@ -60,26 +89,61 @@
                 if ($num_rows > 0) {
                     ?>
                     <table class="tabela-funcionarios">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data de Nascimento</th>
+                            <th>Salário</th>
+                            <th>Cpf</th>
+                            <th>Carteira de Trabalho</th>
+                            <th>Setor</th>
+                            <th>Turno</th>
+                            <th>Função</th>
+                        </tr>
                     <?php
                     while ($row = $result->fetch_assoc()) {
                         ?>
                         <tr>
-                            <th>Nome: <?php echo $row['nome']; ?></th>
+                            <td><?php echo $row['nome']; ?></td>
+                            <td><?php echo $row['datanasc']; ?></td>
                             <?php
                             if (isset($row['login']) && $row['login'] == $_SESSION["nome_usuario"]) {
                                 ?>
-                                <th>Salário: <?php echo $row['salario']; ?></th>
+                                <script>
+                                    recebaPessoa(<?php echo $row['id_func']?>);
+                                </script>
+                                <td><?php echo $row['salario']; ?></td>
                                 <?php
                             } else {
                                 ?>
-                                <th>Salário: Não disponível</th>
+                                <td>Não disponível</td>
                                 <?php
                             }
                             ?>
-                            <th>Data de Nascimento: <?php echo $row['datanasc']; ?></th>
-                            <th>Setor: <?php echo $row['nomesetor']; ?></th>
-                            <th>Turno: <?php echo $row['turno']; ?></th>
-                            <th>Função: <?php echo $row['funcao']; ?></th>
+                            <?php
+                            if (isset($row['login']) && $row['login'] == $_SESSION["nome_usuario"]) {
+                                ?>
+                                <td><?php echo $row['cpf']; ?></td>
+                                <?php
+                            } else {
+                                ?>
+                                <td>Não disponível</td>
+                                <?php
+                            }
+                            ?>
+                            <?php
+                            if (isset($row['login']) && $row['login'] == $_SESSION["nome_usuario"]) {
+                                ?>
+                                <td><?php echo $row['carteiratrabalho']; ?></td>
+                                <?php
+                            } else {
+                                ?>
+                                <td>Não disponível</td>
+                                <?php
+                            }
+                            ?>
+                            <td><?php echo $row['nomesetor']; ?></td>
+                            <td><?php echo $row['turno']; ?></td>
+                            <td><?php echo $row['funcao']; ?></td>
                         </tr>
                         <?php
                     }
@@ -93,26 +157,55 @@
                 if ($num_rows > 0) {
                     ?>
                     <table class="tabela-funcionarios">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Data de Nascimento</th>
+                            <th>Salário</th>
+                            <th>Cpf</th>
+                            <th>Carteira de Trabalho</th>
+                            <th>Setor</th>
+                            <th>Turno</th>
+                            <th>Função</th>
+                            <th>Editar</th>
+                            <th>Excluir</th>
+                        </tr>
                     <?php
                     while ($row = $result->fetch_assoc()) {
                         ?>
                         <tr>
-                            <th>Nome: <?php echo $row['nome']; ?> </th>
-                            <th>Data de Nascimento: <?php echo $row['datanasc']; ?> </th>
-                            <th>Salário: <?php echo $row['salario']; ?> </th>
-                            <th>Cpf: <?php echo $row['cpf']; ?> </th>
-                            <th>Carteira de Trabalho: <?php echo $row['carteiratrabalho']; ?> </th>
-                            <th>Setor: <?php echo $row['nomesetor']; ?> </th>
-                            <th>Turno: <?php echo $row['turno']; ?> </th>
-                            <th>Função: <?php echo $row['funcao']; ?> </th>
-                            <th><button onclick="editarFuncionario('<?php echo $row['cpf']?>', '<?php echo $row['id_func']?>', '<?php echo $row['nome']?>',
-                            '<?php echo $row['datanasc']?>', '<?php echo $row['salario']?>', '<?php echo $row['carteiratrabalho']?>', '<?php echo $row['nomesetor']?>',
-                            '<?php echo $row['turno']?>', '<?php echo $row['funcao']?>' );">
-                                <i class="fa-solid fa-pen"></i>
-                            </button></th>
-                            <th><button onclick="retirarFuncionario('<?php echo $row['cpf']?>', '<?php echo $row['id_func']?>');">
-                                <i class="fa-solid fa-trash"></i>
-                            </button></th>
+                            <td><?php echo $row['nome']; ?></td>
+                            <td><?php echo $row['datanasc']; ?></td>
+                            <td><?php echo $row['salario']; ?></td>
+                            <td><?php echo $row['cpf']; ?></td>
+                            <td><?php echo $row['carteiratrabalho']; ?></td>
+                            <td><?php echo $row['nomesetor']; ?></td>
+                            <td><?php echo $row['turno']; ?></td>
+                            <td><?php echo $row['funcao']; ?></td>
+                            <td>
+                                <button
+                                    onclick="editarFuncionario(
+                                        '<?php echo $row['cpf']?>',
+                                        '<?php echo $row['id_func']?>',
+                                        '<?php echo $row['nome']?>',
+                                        '<?php echo $row['datanasc']?>',
+                                        '<?php echo $row['salario']?>',
+                                        '<?php echo $row['carteiratrabalho']?>',
+                                        '<?php echo $row['nomesetor']?>',
+                                        '<?php echo $row['turno']?>',
+                                        '<?php echo $row['funcao']?>'
+                                    );">
+                                    <i class="fa-solid fa-pen"></i>
+                                </button>
+                            </td>
+                            <td>
+                                <button 
+                                    onclick="retirarFuncionario(
+                                        '<?php echo $row['cpf']?>', 
+                                        '<?php echo $row['id_func']?>'
+                                    );">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            </td>
                         </tr>
                         <?php
                     }
