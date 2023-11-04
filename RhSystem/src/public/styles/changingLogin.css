@@ -39,7 +39,7 @@ form {
     padding: 20px;
 }
 
-.user, .senha {
+.user, .senha, .imagem {
     font-family: 'Poppins', sans-serif;
     font-size: 15px;
     color: white;

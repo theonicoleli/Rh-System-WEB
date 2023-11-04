@@ -13,25 +13,34 @@
 </head>
 <body>
     <div class="header div">
-        <h1 class="title funcionarios">Funcionários</h1>
-        <?php
+    <?php
         session_start();
 
         include(__DIR__ . '/../bd/connectionBD.php');
 
         if (isset($conn) && $conn) {
-            $sql = "SELECT nome, datanasc, salario, cpf, 
-            carteiratrabalho, nomesetor, turno, funcao, 
-            login, id_func FROM Funcionarios";
+            $sql = "SELECT login, imagem FROM Funcionarios";
             $result = $conn->query($sql);
+        }
 
-            if ($result) {
-                $num_rows = $result->num_rows;
-            } else {
-                $num_rows = 0;
+        while ($row = $result->fetch_assoc()) {
+            if (isset($row['imagem']) && $row['login'] == $_SESSION['nome_usuario']) {
+                ?>
+                <h1 class="title addfuncionario">
+                    <img class="imagemPessoa" src="data:image/png;base64,<?= base64_encode($row["imagem"])?>" 
+                    style="width: 50px; height: 50px"/>
+                </h1>
+                <?php
             }
-        } else {
-            $num_rows = 0;
+        }
+        ?>
+
+        <h1 class="title funcionarios">Funcionários</h1>
+
+        <?php
+        if (isset($conn) && $conn) {
+            $sql = "SELECT login, id_func FROM Funcionarios";
+            $result = $conn->query($sql);
         }
 
         if (isset($_SESSION["NomeSetor"])) {
@@ -69,7 +78,7 @@
         if (isset($conn) && $conn) {
             $sql = "SELECT nome, datanasc, salario, cpf, 
             carteiratrabalho, nomesetor, turno, funcao, 
-            login, id_func FROM Funcionarios";
+            login, id_func, imagem FROM Funcionarios";
             $result = $conn->query($sql);
 
             if ($result) {
@@ -90,6 +99,7 @@
                     ?>
                     <table class="tabela-funcionarios">
                         <tr>
+                            <th>Imagens</th>
                             <th>Nome</th>
                             <th>Data de Nascimento</th>
                             <th>Salário</th>
@@ -103,6 +113,22 @@
                     while ($row = $result->fetch_assoc()) {
                         ?>
                         <tr>
+                            <?php
+                            if ($row['imagem']) {
+                                ?>
+                                <td>
+                                    <img class="imagemPessoa" src="data:image/png;base64,<?= base64_encode($row["imagem"])?>" 
+                                    style="width: 50px; height: 50px"/>
+                                </td>
+                                <?php
+                            } else {
+                                ?>
+                                <td>
+                                    Imagem não disponível
+                                </td>
+                                <?php
+                            }
+                            ?>
                             <td><?php echo $row['nome']; ?></td>
                             <td><?php echo $row['datanasc']; ?></td>
                             <?php
@@ -158,6 +184,7 @@
                     ?>
                     <table class="tabela-funcionarios">
                         <tr>
+                            <th>Imagens</th>
                             <th>Nome</th>
                             <th>Data de Nascimento</th>
                             <th>Salário</th>
@@ -173,6 +200,22 @@
                     while ($row = $result->fetch_assoc()) {
                         ?>
                         <tr>
+                            <?php
+                            if ($row['imagem']) {
+                                ?>
+                                <td>
+                                    <img class="imagemPessoa" src="data:image/png;base64,<?= base64_encode($row["imagem"])?>" 
+                                    style="width: 50px; height: 50px"/>
+                                </td>
+                                <?php
+                            } else {
+                                ?>
+                                <td>
+                                    Imagem não disponível
+                                </td>
+                                <?php
+                            }
+                            ?>
                             <td><?php echo $row['nome']; ?></td>
                             <td><?php echo $row['datanasc']; ?></td>
                             <td><?php echo $row['salario']; ?></td>

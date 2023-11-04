@@ -18,13 +18,30 @@
     $turno = strtoupper($_POST["turno"]);
     $funcao = $_POST["funcao"];
 
-    $sql = "INSERT INTO Funcionarios(nome, DataNasc, salario, cpf, carteiratrabalho, nomesetor, turno, funcao) VALUES('$nome', '$dtNascimento',
-    '$salario', '$cpf', '$carteiratrab', '$setor', '$turno', '$funcao')";
+    $imagem_nome = null;
+    $imagem_binario = null;
+
+    if (!empty($_FILES["imagem"]["name"])) {
+        $imagem = $_FILES["imagem"];
+        $imagem_nome = $imagem["name"];
+        $imagem_temp = $imagem["tmp_name"];
+
+        $destino = __DIR__ . "/imagens/" . $imagem_nome;
+        move_uploaded_file($imagem_temp, $destino);
+
+        $imagem_binario = file_get_contents($destino);
+    }
+
+    $sql = "INSERT INTO Funcionarios(nome, DataNasc, salario, cpf, carteiratrabalho, nomesetor, turno, funcao, imagem) 
+            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try {
-        $result = $conn->query($sql);
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssss", $nome, $dtNascimento, $salario, $cpf, $carteiratrab, 
+        $setor, $turno, $funcao, $imagem_binario);
+        $stmt->execute();
 
-        if ($result === TRUE) {
+        if ($stmt->affected_rows > 0) {
             ?>
             <script>
                 alert('Usuário cadastrado com sucesso!!!');
@@ -48,5 +65,6 @@
         <?php
     }
     ?>
+
 </body>
 </html>

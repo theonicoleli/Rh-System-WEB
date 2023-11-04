@@ -16,7 +16,7 @@
     $personLogin = $personSenha = '';
 
     if (isset($conn) && $conn) {
-        $sql = "SELECT login, senha 
+        $sql = "SELECT login, senha
                 FROM Funcionarios 
                 WHERE ID_FUNC = ?";
 
@@ -41,13 +41,19 @@
     ?>
     
     <div class="square">
-        <form name="form" id="form" action="savingChanges.php" method="post">
+        <form name="form" id="form" action="savingChanges.php" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id_func" value="<?php echo $personId; ?>">
-            <p class="p titulo">Alterando Login</p>
-            <p class="p user">Usuário </p>
+            <label class="p titulo" for="Titulo">Alterando Login</label>
+
+            <label class="p user" for="User">Usuário </label>
             <input type="text" name="login" id="login" value="<?php echo $personLogin;?>" placeholder="Usuário"><br>
-            <p class="p senha">Senha </p>
+
+            <label class="p senha" for="Senha">Senha </label>
             <input type="text" name="senha" id="senha" value="<?php echo $personSenha;?>" placeholder="Senha"><br>
+
+            <label class="p imagem" for="Imagem">Imagem </label>
+            <input type="file" name="imagem" id="imagem" placeholder="Imagem"><br>
+
             <input type="submit" value="Enviar">
         </form>
     </div>
