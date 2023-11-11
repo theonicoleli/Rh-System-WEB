@@ -56,6 +56,11 @@
     align-items: center;
 }
 
+.turno {
+    background-color: rgb(64, 85, 150);
+    color: white;
+}
+
 .tabela-funcionarios {
     background-color: rgb(64, 85, 150);
     display: flex;
